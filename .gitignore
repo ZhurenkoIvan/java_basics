@@ -2,6 +2,7 @@
 # Edit at https://www.gitignore.io/?templates=java,linux,macos,maven,windows,jetbrains
 Arithmetic/Arithmetic.iml
 java_basics.iml
+Printer/Printer.iml
 ### Java ###
 # Compiled class file
 *.class
