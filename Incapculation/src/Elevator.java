@@ -25,7 +25,9 @@ public class Elevator {
         if (floor < minFloor || floor > maxFloor) {
             System.out.println("Неверно выбран этаж. Выберите этаж от " + minFloor + " до " + maxFloor);
             return;
-        } else if (floor < currentFloor) {
+        } else if (floor == currentFloor) {
+            return;
+        }else if (floor < currentFloor) {
             while (currentFloor != floor){
                 moveDown();
                 System.out.println("Текущий этаж: " + currentFloor);
