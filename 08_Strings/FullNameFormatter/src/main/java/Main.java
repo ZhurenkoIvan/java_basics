@@ -8,14 +8,17 @@ public class Main {
     while (true) {
       int check = 0;
       String input = scanner.nextLine();
-      if (isStringAllowed(input)) {
+      if (input.isEmpty() || input.contains("  ")) {
         System.out.println("Введенная строка не является ФИО");
         return;
       }
       for (int i = 0; i < input.length(); i++) {
         int letter = input.charAt(i);
-        check = spaceCheck(letter, check);
-        if (isSymbolAllowed(letter)) {continue;
+        if (letter == 32) {
+          check++;
+        }
+        if (letter >= 1040 && letter <= 1103) {continue;
+        }else if (letter == 1025 || letter == 1105 || letter == 45 || letter == 32) { continue;
         } else {
           System.out.println("Введенная строка не является ФИО");
           return;
@@ -40,22 +43,6 @@ public class Main {
       System.out.println(String.format(template, secondName, firstName, surName));
       break;
     }
-  }
-
-  private static int spaceCheck(int letter, int check) {
-    if (letter == ' ') {
-      check ++;
-    }
-    return check;
-
-  }
-
-  private static boolean isSymbolAllowed ( int letter) {
-    return ((letter >= 'А' && letter <= 'я') || letter == 'ё' || letter == 'Ё' || letter == '-' || letter == ' ');
-  }
-
-  private static boolean isStringAllowed (String input) {
-    return input.isEmpty() || input.contains("  ");
   }
 
 }
