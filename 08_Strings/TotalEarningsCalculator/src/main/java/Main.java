@@ -1,3 +1,5 @@
+import java.io.IOException;
+
 public class Main {
 
   public static void main(String[] args) {
@@ -5,23 +7,27 @@ public class Main {
     String text = "Вася заработал 5000 рублей, Петя - 7563 рубля, а Маша - 30000 рублей";
 
     //TODO: напишите ваш код, результат вывести в консоль
-    String charsetVasya = "5000";
-    String charsetPetya = "7563";
-    String charsetMasha = "30000";
-    int startVasya = text.indexOf(charsetVasya);
-    int endVasya = text.indexOf(charsetVasya) + charsetVasya.length();
-    int startPetya = text.indexOf(charsetPetya);
-    int endPetya = text.indexOf(charsetPetya) + charsetPetya.length();
-    int startMasha = text.indexOf(charsetMasha);
-    int endMasha = text.indexOf(charsetMasha) + charsetMasha.length();
+    int startIndex = text.indexOf(" ");
+    int endIndex = 0;
+    int finalIndex = text.lastIndexOf(" ");
+    int sum = 0;
 
-    int sum = Integer.parseInt(text.substring(startVasya, endVasya)) +
-            Integer.parseInt(text.substring(startMasha, endMasha)) +
-            Integer.parseInt(text.substring(startPetya, endPetya));
-
+    while (endIndex <= finalIndex) {
+      if (endIndex < finalIndex) {
+        endIndex = text.indexOf(" ", startIndex + 1);
+        String word = text.substring(startIndex + 1, endIndex);
+        startIndex = endIndex;
+        if (word.charAt(0) >= '0' && word.charAt(0) <= '9') {
+          sum += Integer.parseInt(word);
+        }
+      } else {
+        String word = text.substring(endIndex + 1, text.length());
+        if (word.charAt(0) >= '0' && word.charAt(0) <= '9') {
+          sum += Integer.parseInt(word);
+        }
+        endIndex++;
+      }
+    }
     System.out.println(sum);
-
-
   }
-
 }
