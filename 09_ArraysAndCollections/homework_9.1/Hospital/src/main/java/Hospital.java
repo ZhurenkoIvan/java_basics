@@ -1,4 +1,5 @@
 public class Hospital {
+    private static double epcilon = 0.001;
 
     public static float[] generatePatientsTemperatures(int patientsCount) {
         //TODO: напишите метод генерации массива температур пациентов
@@ -17,7 +18,7 @@ public class Hospital {
         for (int i = 0; i < temperatureData.length; i++) {
             mediana += temperatureData[i];
             allTemperature += " " + temperatureData[i];
-            if (temperatureData[i] <= 36.91 && temperatureData[i] >= 36.19){
+            if (temperatureData[i] - epcilon <= 36.9 && temperatureData[i] + epcilon >= 36.2){
                 ++healthyPatients;
             }
         }
