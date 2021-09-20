@@ -31,16 +31,18 @@ public class Main {
         }
 
         //Поиск в Хэшсет
+        HashSet<String> hashSet= new HashSet<>(list);
         start = System.nanoTime();
-        if (CoolNumbers.searchInHashSet(new HashSet<>(list), number)) {
+        if (CoolNumbers.searchInHashSet(hashSet, number)) {
             System.out.println("Номер найден. Поиск занял " + (System.nanoTime() - start) + "нс");
         } else{
             System.out.println("Номер не найден. Поиск занял " + (System.nanoTime() - start) + "нс");
         }
 
         //Поиск в Трисет
+        TreeSet<String> treeSet = new TreeSet<>(list);
         start = System.nanoTime();
-        if (CoolNumbers.searchInTreeSet(new TreeSet<>(list), number)) {
+        if (CoolNumbers.searchInTreeSet(treeSet, number)) {
             System.out.println("Номер найден. Поиск занял " + (System.nanoTime() - start) + "нс");
         } else{
             System.out.println("Номер не найден. Поиск занял " + (System.nanoTime() - start) + "нс");
