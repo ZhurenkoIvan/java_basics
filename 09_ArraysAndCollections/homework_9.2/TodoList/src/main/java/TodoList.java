@@ -37,7 +37,16 @@ public class TodoList {
 
     public ArrayList<String> getTodos() {
         // TODO: вернуть список дел
+
         return todoList;
+    }
+
+    public int size() {
+        return todoList.size();
+    }
+
+    public String getTodoListAtIndex(int index) {
+        return todoList.get(index);
     }
 
 }
