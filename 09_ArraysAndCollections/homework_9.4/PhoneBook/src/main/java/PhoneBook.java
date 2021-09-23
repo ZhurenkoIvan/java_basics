@@ -18,11 +18,10 @@ public class PhoneBook {
                 phoneBook.remove(intermediateArray[0], phone);
                 phoneBook.put(name, phone);
             }else if (phoneBook.containsKey(name)) {
-                phoneBook.put(name, phone);
+                phoneBook.put(name, phoneBook.get(name) + ", " + phone);
             } else {
                 phoneBook.put(name, phone);
             }
-
         }
     }
 
