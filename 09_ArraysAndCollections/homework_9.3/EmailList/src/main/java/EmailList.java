@@ -6,13 +6,15 @@ public class EmailList {
     public static  final String REGEX = "[A-Za-z]+[@]{1}[a-z]+[.]{1}[A-Za-z]+";
 
     public EmailList() {
-        this.emailList = new TreeSet<>();
+        Comparator<String> sortedEmailsByDomen = new EmailComparator();
+        this.emailList = new TreeSet<>(sortedEmailsByDomen);
     }
 
     public void add(String email) {
         if(email.matches(REGEX)) {
             email = email.toLowerCase(Locale.ROOT);
             emailList.add(email);
+            System.out.println("Добавлен новый email");
         }
         else {
             System.out.println(WRONG_EMAIL);

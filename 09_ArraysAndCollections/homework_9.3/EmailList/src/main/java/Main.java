@@ -18,6 +18,7 @@ public class Main {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         EmailList emailList = new EmailList();
+
         
         while (true) {
             String input = scanner.nextLine();
