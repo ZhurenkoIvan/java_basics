@@ -28,7 +28,11 @@ public class PhoneBook {
                 String previousAbonent = intermediateArray[0];
                 TreeSet <String> newSetofPhones = phoneBook.get(previousAbonent);
                 newSetofPhones.remove(phone);
-                phoneBook.put(previousAbonent, newSetofPhones);
+                if(newSetofPhones.isEmpty()){
+                    phoneBook.remove(previousAbonent);
+                } else {
+                    phoneBook.put(previousAbonent, newSetofPhones);
+                }
                 phoneBook.put(name, setOfPhones);
             }else if (phoneBook.containsKey(name)) {
                 phoneBook.put(name, setOfPhones);
