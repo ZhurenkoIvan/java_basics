@@ -16,36 +16,44 @@ public class Main {
         //Сортировка перебором
         double start = System.nanoTime();
         if (CoolNumbers.bruteForceSearchInList(list, number)) {
-            System.out.println("Номер найден. Поиск занял " + (System.nanoTime() - start) + "нс");
+            double end = System.nanoTime();
+            System.out.println("Номер найден. Поиск занял " + (end - start) + "нс");
         } else{
-            System.out.println("Номер не найден. Поиск занял " + (System.nanoTime() - start) + "нс");
+            double end = System.nanoTime();
+            System.out.println("Номер не найден. Поиск занял " + (end - start) + "нс");
         }
 
         //Бинарный поиск
         Collections.sort(list);
         start = System.nanoTime();
         if (CoolNumbers.binarySearchInList(list, number)) {
-            System.out.println("Номер найден. Поиск занял " + (System.nanoTime() - start) + "нс");
+            double end = System.nanoTime();
+            System.out.println("Номер найден. Поиск занял " + (end - start) + "нс");
         } else{
-            System.out.println("Номер не найден. Поиск занял " + (System.nanoTime() - start) + "нс");
+            double end = System.nanoTime();
+            System.out.println("Номер не найден. Поиск занял " + (end - start) + "нс");
         }
 
         //Поиск в Хэшсет
         HashSet<String> hashSet= new HashSet<>(list);
         start = System.nanoTime();
         if (CoolNumbers.searchInHashSet(hashSet, number)) {
-            System.out.println("Номер найден. Поиск занял " + (System.nanoTime() - start) + "нс");
+            double end = System.nanoTime();
+            System.out.println("Номер найден. Поиск занял " + (end - start) + "нс");
         } else{
-            System.out.println("Номер не найден. Поиск занял " + (System.nanoTime() - start) + "нс");
+            double end = System.nanoTime();
+            System.out.println("Номер не найден. Поиск занял " + (end - start) + "нс");
         }
 
         //Поиск в Трисет
         TreeSet<String> treeSet = new TreeSet<>(list);
         start = System.nanoTime();
         if (CoolNumbers.searchInTreeSet(treeSet, number)) {
-            System.out.println("Номер найден. Поиск занял " + (System.nanoTime() - start) + "нс");
+            double end = System.nanoTime();
+            System.out.println("Номер найден. Поиск занял " + (end - start) + "нс");
         } else{
-            System.out.println("Номер не найден. Поиск занял " + (System.nanoTime() - start) + "нс");
+            double end = System.nanoTime();
+            System.out.println("Номер не найден. Поиск занял " + (end - start) + "нс");
         }
 
 
