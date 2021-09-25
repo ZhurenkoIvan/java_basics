@@ -1,16 +1,24 @@
 public abstract class Client {
 
+    protected double amountOfMoney;
+
+
     public double getAmount() {
-        //TODO: реализуйте метод и удалите todo
-        return 0;
+        return amountOfMoney;
     }
 
     public void put(double amountToPut) {
-        //TODO: реализуйте метод и удалите todo
+        if (amountToPut > 0) {
+            amountOfMoney += amountToPut;
+        }
     }
 
     public void take(double amountToTake) {
-        //TODO: реализуйте метод и удалите todo
-    }
+        if (amountToTake <= amountOfMoney && amountToTake > 0) {
+            amountOfMoney -= amountToTake;
+        }
+    };
+
+    public abstract void getTermsOfService();
 
 }
