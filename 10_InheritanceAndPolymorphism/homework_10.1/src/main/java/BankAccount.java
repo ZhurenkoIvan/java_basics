@@ -1,5 +1,6 @@
 public class BankAccount {
-  public double moneyInTheAccount = 0.0;
+  private double moneyInTheAccount = 0.0;
+  public static final double COMMISSION = 1.0;
 
   public double getAmount() {
     // верните значение количества денег не счету
@@ -13,21 +14,20 @@ public class BankAccount {
     }
   }
 
-  public boolean take(double amountToTake) {
+  public boolean take(double amountToTake, double commission) {
     // метод списывает деньги со счета
-    if (amountToTake < moneyInTheAccount) {
-      moneyInTheAccount -= amountToTake;
+    if (amountToTake * commission < moneyInTheAccount) {
+      moneyInTheAccount -= amountToTake * commission;
       return true;
     }
     return false;
   }
 
-  public boolean send (BankAccount receiver, double amountToSend) {
-    if (take(amountToSend)) {
+  public boolean send (BankAccount receiver, double amountToSend, double commission) {
+    if (take(amountToSend,commission)) {
       receiver.put(amountToSend);
       return true;
     }
     return false;
   }
-
 }
