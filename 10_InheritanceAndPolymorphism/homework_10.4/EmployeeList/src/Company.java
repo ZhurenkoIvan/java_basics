@@ -1,7 +1,6 @@
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.List;
 
 public class Company {
     private int companyIncome;
@@ -92,4 +91,23 @@ public class Company {
         return employeeList.size();
     }
 
+    public boolean containEmployee(Employee employee) {
+        return employeeList.contains(employee);
+    }
+
+    public void fireHalfOfOperators() {
+        ArrayList<Operator> operators = getOperators();
+        for (int i = 0; i < operators.size() / 2; i++) {
+            int index = (int) (Math.random() * operators.size());
+            employeeList.remove(operators.get(index));
+        }
+    }
+
+    public ArrayList<Operator> getOperators () {
+        ArrayList<Operator> operators = new ArrayList<Operator>();
+        for (Employee employee : employeeList) {
+            if (employee instanceof Operator) operators.add((Operator) employee);
+        }
+        return operators;
+    }
 }
