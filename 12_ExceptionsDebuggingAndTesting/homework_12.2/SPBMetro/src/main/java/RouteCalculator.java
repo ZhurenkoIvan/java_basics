@@ -21,8 +21,8 @@ public class RouteCalculator {
             return route;
         }
 
-        route = getRouteWithOneConnection(from, to);
-        if (route != null) {
+        route = getRouteWithOneConnection(from, to); //Ошибка была в том, что значение route после работы метода не была равна null
+        if (route.size() > 0) {
             return route;
         }
 
