@@ -14,7 +14,8 @@ public class CustomerStorage {
 
     public void addCustomer(String data){
         if(!data.matches(REGEX)){
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("Неверный формат ввода. Введите данные в формате:"+
+                    System.lineSeparator() + "add [Пробел] Имя [Пробел] Фамилия [Пробел] Email [Пробел] +71234567890");
         }
         final int INDEX_NAME = 0;
         final int INDEX_SURNAME = 1;
