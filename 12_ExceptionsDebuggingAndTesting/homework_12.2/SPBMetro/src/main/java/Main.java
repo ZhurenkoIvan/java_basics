@@ -21,7 +21,7 @@ public class Main {
 
     public static void main(String[] args) {
         RouteCalculator calculator = getRouteCalculator();
-        logger = LogManager.getRootLogger();
+        logger = LogManager.getLogger(Main.class);
 
         System.out.println("Программа расчёта маршрутов метрополитена Санкт-Петербурга\n");
         scanner = new Scanner(System.in);
@@ -38,9 +38,12 @@ public class Main {
 
                 System.out.println("Длительность: " +
                         RouteCalculator.calculateDuration(route) + " минут");
+                throw new Exception();
             } catch (Exception exception) {
-                exception.printStackTrace();
+
                 logger.error(exception);
+                exception.printStackTrace();
+
             }
 
         }
