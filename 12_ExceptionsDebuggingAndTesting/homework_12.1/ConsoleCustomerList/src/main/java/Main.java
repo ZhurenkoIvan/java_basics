@@ -26,7 +26,7 @@ public class Main {
                     try {
                         executor.removeCustomer(tokens[1]);
                     } catch (IndexOutOfBoundsException e) {
-                        e.printStackTrace();
+                        System.out.println("Не указан элемент, который нужно убрать");
                     }
 
                 } else if (tokens[0].equals("count")) {
