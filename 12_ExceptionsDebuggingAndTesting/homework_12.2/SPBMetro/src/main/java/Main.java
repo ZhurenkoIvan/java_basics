@@ -2,6 +2,8 @@ import core.Line;
 import core.Station;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.Marker;
+import org.apache.logging.log4j.MarkerManager;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -15,13 +17,16 @@ import java.util.Scanner;
 public class Main {
     private static final String DATA_FILE = "C:\\IdeaProjects\\java_basics\\12_ExceptionsDebuggingAndTesting\\homework_12.2\\SPBMetro\\src\\main\\resources\\map.json";
     private static Scanner scanner;
-    private static Logger logger;
+    private static Logger logger = LogManager.getLogger(Main.class);
+    public static final Marker INPUT_HISTORY_MARKER = MarkerManager.getMarker("INPUT_HISTORY");
+    public static final Marker INVALID_STATIONS_MARKER = MarkerManager.getMarker("INVALID_STATIONS");
+    public static final Marker EXCEPTION_MARKER = MarkerManager.getMarker("EXCEPTION");
+
 
     private static StationIndex stationIndex;
 
     public static void main(String[] args) {
         RouteCalculator calculator = getRouteCalculator();
-        logger = LogManager.getLogger(Main.class);
 
         System.out.println("Программа расчёта маршрутов метрополитена Санкт-Петербурга\n");
         scanner = new Scanner(System.in);
@@ -29,8 +34,8 @@ public class Main {
             try {
                 Station from = takeStation("Введите станцию отправления:");
                 Station to = takeStation("Введите станцию назначения:");
-                logger.info(from);
-                logger.info(to);
+                logger.info(INPUT_HISTORY_MARKER, "Пользователь ввел станцию: {}", from);
+                logger.info(INPUT_HISTORY_MARKER, "Пользователь ввел станцию: {}", to);
 
                 List<Station> route = calculator.getShortestRoute(from, to);
                 System.out.println("Маршрут:");
@@ -41,7 +46,7 @@ public class Main {
                 throw new Exception();
             } catch (Exception exception) {
 
-                logger.error(exception);
+                logger.error(EXCEPTION_MARKER, exception.getStackTrace());
                 exception.printStackTrace();
 
             }
@@ -78,7 +83,7 @@ public class Main {
             if (station != null) {
                 return station;
             }
-            logger.warn("Станция не найдена: " + line);
+            logger.warn(INVALID_STATIONS_MARKER, "Станция не найдена: {}", line);
             System.out.println("Станция не найдена :(");
         }
     }
