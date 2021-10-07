@@ -1,8 +1,8 @@
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
-import java.util.concurrent.atomic.DoubleAccumulator;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class Transaction {
     public static final SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yy");
@@ -12,9 +12,12 @@ public class Transaction {
     private String currency;
     private Date date;
     private String code;
-    private String operationInfo;
+    private String transactionInfo;
     private double income;
     private double expenses;
+    private String organization;
+
+
 
     public Transaction(String[] transactionInfo) throws ParseException {
 
@@ -23,9 +26,24 @@ public class Transaction {
         this.currency = transactionInfo[2];
         this.date = dateFormat.parse(transactionInfo[3]);
         this.code = transactionInfo[4];
-        this.operationInfo = transactionInfo[5];
-        this.income = Double.valueOf(transactionInfo[6]);
-        this.expenses = Double.valueOf(transactionInfo[7]);
+        this.transactionInfo = transactionInfo[5];
+        this.income = Double.parseDouble(transactionInfo[6]);
+        this.expenses = Double.parseDouble(transactionInfo[7]);
+        String substring = transactionInfo[5];
+        Pattern pattern = Pattern.compile("[0-9]{2}[.][0-9]{2}[.][0-9]{2}");
+        Matcher matcher = pattern.matcher(substring);
+        if (matcher.find()) {
+            int start = matcher.start();
+            substring = substring.substring(0,start);
+            if (substring.contains("/")) {
+                substring = substring.substring(substring.lastIndexOf('/') + 1).trim();
+                this.organization = substring;
+            }
+            if (substring.contains("\\")) {
+                substring = substring.substring(substring.lastIndexOf("\\") + 1).trim();
+                this.organization = substring;
+            }
+        }
     }
 
     public String getAccountType() {
@@ -48,8 +66,8 @@ public class Transaction {
         return code;
     }
 
-    public String getOperationInfo() {
-        return operationInfo;
+    public String getTransactionInfo() {
+        return transactionInfo;
     }
 
     public double getIncome() {
@@ -59,4 +77,6 @@ public class Transaction {
     public double getExpenses() {
         return expenses;
     }
+
+    public String getOrganization() {return organization;}
 }
