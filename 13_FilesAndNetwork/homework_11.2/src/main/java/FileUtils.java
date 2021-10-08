@@ -3,6 +3,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -20,7 +21,7 @@ public class FileUtils {
             for (File fileInDirectory : files) {
                 if (fileInDirectory.isFile()){
                     allFiles.add(fileInDirectory);
-                    createFileInDestinationPath(fileInDirectory, sourceDirectory, destinationDirectory);
+                    createFileInDestinationPath(allFiles, fileInDirectory, sourceDirectory, destinationDirectory);
                 } else {
                     allDirectories.add(fileInDirectory);
                     createDirectoryInDestinationPath(fileInDirectory, sourceDirectory, destinationDirectory);
@@ -40,16 +41,21 @@ public class FileUtils {
         destinationFile.mkdir();
     }
 
-    private static void createFileInDestinationPath (File file, String sourceDirectory,String destinationDirectory) {
+    private static void createFileInDestinationPath (List<File> fileList, File file, String sourceDirectory,String destinationDirectory) {
         String filePath = file.getAbsolutePath();
         int end = sourceDirectory.length();
         String destinationFilePath = destinationDirectory + filePath.substring(end);
         File destinationFile = new File(destinationFilePath);
-        try {
-            destinationFile.createNewFile();
-        } catch (IOException e) {
-            e.printStackTrace();
+        if (destinationFile.exists()) {
+           ifFileExist(destinationFile, fileList, file);
+        } else {
+            try {
+                destinationFile.createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
+
     }
 
     private static void copyFiles (List<File> fileList, String sourceDirectory, String destinationDirectory) {
@@ -74,5 +80,26 @@ public class FileUtils {
                 e.printStackTrace();
             }
         }
+    }
+    private static void ifFileExist (File destinationFile, List<File> fileList, File sourceFile) {
+        boolean check = true;
+        while (check) {
+            System.out.println(destinationFile.getAbsolutePath() + System.lineSeparator()
+                    + "Файл с таким именем уже существует. Хотите перезаписать файл? Да/Нет");
+            Scanner scanner = new Scanner(System.in);
+            String input = scanner.nextLine();
+            if (input.equals("Да")) {
+                try {
+                    destinationFile.createNewFile();
+                    check = false;
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }else if (input.equals("Нет")) {
+                fileList.remove(sourceFile);
+                check = false;
+            } else System.out.println("Неправильный ввод. Введите либо \"Да\", либо \"Нет\"");
+        }
+
     }
 }
