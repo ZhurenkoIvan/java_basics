@@ -12,7 +12,7 @@ import java.net.URL;
 public class Main {
     public static void main(String[] args) {
         try {
-            Document lentaHtml = Jsoup.connect("https://lenta.ru/").maxBodySize(0).get();
+            Document lentaHtml = Jsoup.connect("https://lenta.ru/").get();
             Elements images = lentaHtml.select("img");
             images.forEach(image -> {
                 String absLink = image.attr("abs:src");

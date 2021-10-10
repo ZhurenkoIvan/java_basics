@@ -11,21 +11,10 @@ import org.json.simple.parser.JSONParser;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner;
 
 public class Main {
-//    HashMap<String, String> lines = new HashMap<>();
-//    Document moscowMetro = Jsoup.connect("https://www.moscowmap.ru/metro.html#lines").maxBodySize(0).get();
-//    Elements linesJsoup = moscowMetro.select("div #metrodata span.js-metro-line");
-//            linesJsoup.forEach(element -> {
-//        System.out.println(element.text());
-//        System.out.println(element.attr("[data-line]"));
-//        lines.put(element.text(), element.attr("[data-line]"));;
-//    });
-//    Elements stations = moscowMetro.select("div #metrodata [data-line=\"1\"] span.name");
-//            stations.forEach(station -> System.out.println(station.text()));
     private static final String DATA_FILE = "C:\\IdeaProjects\\java_basics\\12_ExceptionsDebuggingAndTesting\\homework_12.2\\SPBMetro\\src\\main\\resources\\map.json";
     private static Scanner scanner;
     private static Logger logger = LogManager.getLogger(Main.class);
