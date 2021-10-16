@@ -8,7 +8,7 @@ import java.util.Objects;
 public class PurchaseList {
 
     @EmbeddedId
-    public PurchaseKey id;
+    private PurchaseKey id;
 
     private int price;
 
@@ -47,11 +47,6 @@ public class PurchaseList {
 
         @Column(name = "course_name")
         private String courseName;
-
-        public PurchaseKey(String studentName, String courseName) {
-            this.studentName = studentName;
-            this.courseName = courseName;
-        }
 
         public String getStudentName() {
             return studentName;

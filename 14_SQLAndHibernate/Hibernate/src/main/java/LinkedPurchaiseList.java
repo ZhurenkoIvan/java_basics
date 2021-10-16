@@ -1,18 +1,13 @@
 import javax.persistence.*;
 import java.io.Serializable;
-import java.sql.Date;
-import java.sql.Timestamp;
 import java.util.Objects;
 
 @Entity
-@Table(name = "subscriptions")
-public class Subscription {
+@Table(name = "linkedpurchaselist")
+public class LinkedPurchaiseList {
 
     @EmbeddedId
     private Key id;
-
-    @Column(name = "subscription_date")
-    private Timestamp subscriptionDate;
 
     public Key getId() {
         return id;
@@ -20,14 +15,6 @@ public class Subscription {
 
     public void setId(Key id) {
         this.id = id;
-    }
-
-    public Timestamp getSubscriptionDate() {
-        return subscriptionDate;
-    }
-
-    public void setSubscriptionDate(Timestamp subscriptionDate) {
-        this.subscriptionDate = subscriptionDate;
     }
 
     @Embeddable

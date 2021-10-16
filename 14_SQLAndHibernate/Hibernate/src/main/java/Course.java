@@ -6,9 +6,9 @@ import java.util.List;
 public class Course {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Integer id;
 
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinTable(name = "subscriptions",
     joinColumns = {@JoinColumn(name = "course_id")},
     inverseJoinColumns = {@JoinColumn(name = "student_id")})
@@ -27,8 +27,8 @@ public class Course {
     @ManyToOne(cascade = CascadeType.ALL)
     private Teacher teacher;
 
-    @Column(name = "students_count")
-    private int studentsCount;
+    @Column(name = "students_count", nullable = true)
+    private Integer studentsCount;
 
 
     private int price;
