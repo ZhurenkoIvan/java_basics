@@ -1,12 +1,18 @@
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 import java.util.Vector;
 
 public class Bank {
-
-    private Vector<String> blockedAcc = new Vector<String>();
     private Map<String, Account> accounts;
+
+    public Map<String, Account> getAccounts() {
+        return accounts;
+    }
+
+    public void setAccounts(Map<String, Account> accounts) {
+        this.accounts = accounts;
+    }
+
     private final Random random = new Random();
 
     public synchronized boolean isFraud(String fromAccountNum, String toAccountNum, long amount)
@@ -22,12 +28,14 @@ public class Bank {
      * усмотрение)
      */
     public void transfer(String fromAccountNum, String toAccountNum, long amount) {
-        if (!blockedAcc.contains(fromAccountNum) && !blockedAcc.contains(toAccountNum)){
+        Account fromAccount = accounts.get(fromAccountNum);
+        Account toAccount = accounts.get(toAccountNum);
+        if (!fromAccount.isBlocked() && !toAccount.isBlocked()){
             if (amount > 50000){
                 try {
                     if (isFraud(fromAccountNum, toAccountNum, amount)) {
-                    blockedAcc.add(fromAccountNum);
-                    blockedAcc.add(toAccountNum);
+                    fromAccount.setBlocked(true);
+                    toAccount.setBlocked(true);
                 } else {
                     addMoney(fromAccountNum, toAccountNum, amount);
                 }
