@@ -25,8 +25,6 @@ public class ImageResizer extends Thread{
                     continue;
                 }
 
-
-
                 int newWidth = 300;
                 int newHeight = (int) Math.round(
                         image.getHeight() / (image.getWidth() / (double) newWidth)

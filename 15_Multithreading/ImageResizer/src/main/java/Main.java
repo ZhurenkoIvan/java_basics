@@ -1,14 +1,10 @@
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
 import java.io.File;
-import java.util.Arrays;
 
 public class Main {
 
     public static void main(String[] args) {
-        int cores = Runtime.getRuntime().availableProcessors();
-        String srcFolder = "C:\\IdeaProjects\\java_basics\\13_FilesAndNetwork\\homework_13.4\\src\\Images";
-        String dstFolder = "C:\\IdeaProjects\\java_basics\\15_Multithreading\\ImageResizer\\src\\main\\resources\\Images";
+        String srcFolder = "src/main/resources/Images2";
+        String dstFolder = "src/main/resources/Images";
 
         File srcDir = new File(srcFolder);
 
@@ -17,11 +13,11 @@ public class Main {
         File[] files = srcDir.listFiles();
         int startFileIndex = 0;
 
-        while ((files.length - startFileIndex - files.length / cores) >= 12) {
-            File[] files1 = new File[files.length/cores];
+        while ((files.length - startFileIndex - files.length / 10) >= 10) {
+            File[] files1 = new File[files.length/10];
             System.arraycopy(files, startFileIndex, files1, 0, files1.length);
             new ImageResizer(files1, dstFolder, start).start();
-            startFileIndex += files.length / cores;
+            startFileIndex += files.length / 10;
         }
         File[] files1 = new File[files.length - startFileIndex];
         System.arraycopy(files, startFileIndex, files1, 0, files1.length);
