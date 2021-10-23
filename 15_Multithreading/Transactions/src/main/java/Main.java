@@ -1,4 +1,3 @@
-import java.util.ArrayList;
 import java.util.HashMap;
 
 
@@ -15,17 +14,11 @@ public class Main {
         bank.setAccounts(accounts);
 
         //Запускаю потоки
-        ArrayList<TransferCkeck> transfersList = new ArrayList<>();
-        for (int i = 0; i < 10; i++) {
-
+        for (int i = 0; i < 100; i++) {
             TransferCkeck transferCkeck = new TransferCkeck();
             transferCkeck.setBank(bank);
-            transfersList.add(transferCkeck);
+            transferCkeck.start();
         }
-
-            transfersList.forEach(t -> {
-                t.start();
-            });
     }
 
     private static Account generateAccount(int id) {

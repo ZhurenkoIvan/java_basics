@@ -1,5 +1,3 @@
-import java.util.Map;
-
 public class TransferCkeck extends Thread {
 
     private String name;
@@ -14,10 +12,10 @@ public class TransferCkeck extends Thread {
 
     @Override
     public void run() {
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < 10; i++) {
             fromId = String.valueOf((int) (Math.random() * 499));
             toId = String.valueOf((int) (Math.random() * 499));
-            amount = (long) (Math.random() * 100000l);
+            amount = (long) (Math.random() * 51000l);
             System.out.println("Имя потока: " + name + System.lineSeparator() + "Денег на счету ДО трансфера: " + bank.getAccounts().get(fromId).getMoney() +
                     System.lineSeparator() + "Количество денег, которые нужно снять со счета " + fromId + ": " + amount);
             bank.transfer(fromId, toId, amount);
