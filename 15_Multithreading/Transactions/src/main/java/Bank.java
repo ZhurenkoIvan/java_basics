@@ -26,23 +26,29 @@ public class Bank {
      * метод isFraud. Если возвращается true, то делается блокировка счетов (как – на ваше
      * усмотрение)
      */
-    public synchronized void transfer(String fromAccountNum, String toAccountNum, long amount) {
+    public void transfer(String fromAccountNum, String toAccountNum, long amount) {
         Account fromAccount = accounts.get(fromAccountNum);
         Account toAccount = accounts.get(toAccountNum);
-        if (!fromAccount.isBlocked() && !toAccount.isBlocked()){
-            if (amount > 50000){
-                try {
-                    if (isFraud(fromAccountNum, toAccountNum, amount)) {
-                    fromAccount.setBlocked(true);
-                    toAccount.setBlocked(true);
-                } else {
-                    addMoney(fromAccountNum, toAccountNum, amount);
+        synchronized (fromAccount) {
+            if (!fromAccount.isBlocked()){
+                synchronized (toAccount){
+                    if (!toAccount.isBlocked()){
+                        if (amount > 50000){
+                            try {
+                                if (isFraud(fromAccountNum, toAccountNum, amount)) {
+                                    fromAccount.setBlocked(true);
+                                    toAccount.setBlocked(true);
+                                } else {
+                                    addMoney(fromAccountNum, toAccountNum, amount);
+                                }
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+                        } else {
+                            addMoney(fromAccountNum, toAccountNum, amount);
+                        }
+                    }
                 }
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        } else {
-                addMoney(fromAccountNum, toAccountNum, amount);
             }
         }
     }
