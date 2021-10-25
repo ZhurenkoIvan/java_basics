@@ -14,7 +14,7 @@ public class Bank {
 
     private final Random random = new Random();
 
-    public synchronized boolean isFraud(String fromAccountNum, String toAccountNum, long amount)
+    public synchronized boolean isFraud(Account fromAccount, Account toAccount, long amount)
         throws InterruptedException {
         Thread.sleep(1000);
         return random.nextBoolean();
@@ -29,26 +29,38 @@ public class Bank {
     public void transfer(String fromAccountNum, String toAccountNum, long amount) {
         Account fromAccount = accounts.get(fromAccountNum);
         Account toAccount = accounts.get(toAccountNum);
+        String fromAccountId = fromAccount.getAccNumber();
+        String toAccountId = toAccount.getAccNumber();
+        if (fromAccountId.compareTo(toAccountId) > 0) {
         synchronized (fromAccount) {
-            if (!fromAccount.isBlocked()){
                 synchronized (toAccount){
-                    if (!toAccount.isBlocked()){
-                        if (amount > 50000){
-                            try {
-                                if (isFraud(fromAccountNum, toAccountNum, amount)) {
-                                    fromAccount.setBlocked(true);
-                                    toAccount.setBlocked(true);
-                                } else {
-                                    addMoney(fromAccountNum, toAccountNum, amount);
-                                }
-                            } catch (InterruptedException e) {
-                                e.printStackTrace();
-                            }
-                        } else {
-                            addMoney(fromAccountNum, toAccountNum, amount);
-                        }
-                    }
+                    doTransfer(fromAccount, toAccount, amount);
                 }
+            }
+        } else {
+            synchronized (toAccount) {
+                synchronized (fromAccount) {
+                    doTransfer(fromAccount, toAccount, amount);
+                }
+            }
+        }
+    }
+
+    private void doTransfer(Account fromAccount, Account toAccount, long amount) {
+        if (!fromAccount.isBlocked() && !toAccount.isBlocked() && fromAccount.getMoney() >= amount) {
+            if (amount > 50000) {
+                try {
+                    if (isFraud(fromAccount, toAccount, amount)) {
+                        fromAccount.setBlocked(true);
+                        toAccount.setBlocked(true);
+                    } else {
+                        addMoney(fromAccount, toAccount, amount);
+                    }
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }else {
+                addMoney(fromAccount, toAccount, amount);
             }
         }
     }
@@ -61,9 +73,7 @@ public class Bank {
         return account.getMoney();
     }
 
-    public void addMoney (String fromAccountNum, String toAccountNum, long amount) {
-        Account fromAccount = accounts.get(fromAccountNum);
-        Account toAccount = accounts.get(toAccountNum);
+    public void addMoney (Account fromAccount,  Account toAccount, long amount) {
         if (fromAccount.getMoney() >= amount) {
             fromAccount.setMoney(fromAccount.getMoney() - amount);
             toAccount.setMoney(toAccount.getMoney() + amount);
