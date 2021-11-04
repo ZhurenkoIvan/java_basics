@@ -1,5 +1,6 @@
-package models;
+package main;
 
+import models.ToDo;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 import java.util.ArrayList;
