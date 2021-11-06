@@ -1,46 +1,61 @@
 package main;
 
 import models.ToDo;
+import models.ToDoRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class ToDoList {
 
-    private static int currentId = 1;
-    private static HashMap<Integer, ToDo> toDoList = new HashMap<>();
+    @Autowired
+    private static ToDoRepository toDoRepository;
 
-    public synchronized static int addToDo(ToDo toDo) {
-        int id = currentId++;
-        toDoList.put(id, toDo);
-        return id;
+    private static int currentId = 1;
+    private static ConcurrentHashMap<Integer, ToDo> toDoList = new ConcurrentHashMap<>();
+
+    public static int addToDo(ToDo toDo) {
+        ToDo newTodo = toDoRepository.save(toDo);
+        return newTodo.getId();
     }
 
     public static List<ToDo> getToDoList () {
-        return new ArrayList<>(toDoList.values());
-    }
-
-    public static ToDo getToDo(int toDoId) {
-        return toDoList.getOrDefault(toDoId, null);
-    }
-
-    public synchronized static void deleteToDo(int toDoId) {
-        if (toDoList.containsKey(toDoId)) {
-            toDoList.remove(toDoId);
+        Iterable<ToDo> toDoIterable = toDoRepository.findAll();
+        ArrayList<ToDo> toDoArrayList = new ArrayList<>();
+        for (ToDo toDo : toDoIterable) {
+            toDoArrayList.add(toDo);
         }
+        return toDoArrayList;
     }
 
-    public synchronized static void deleteToDoList() {
-        toDoList.clear();
+    public static ResponseEntity getToDo(int toDoId) {
+        Optional<ToDo> optionalToDo = toDoRepository.findById(toDoId);
+        if (!optionalToDo.isPresent()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+        return new ResponseEntity(optionalToDo.get(), HttpStatus.OK);
     }
 
-    public synchronized static ToDo updateToDo(int id, Date date) {
-        ToDo toDo = toDoList.get(id);
-        toDo.setWhenToDo(date);
-        return toDo;
+    public static void deleteToDo(int toDoId) {
+        toDoRepository.deleteById(toDoId);
+    }
+
+    public static void deleteToDoList() {
+        toDoRepository.deleteAll();
+    }
+
+    public static ResponseEntity updateToDo(int id, Date date) {
+        Optional<ToDo> optionalToDo = toDoRepository.findById(id);
+        if (optionalToDo.isPresent()){
+            ToDo newTodo = optionalToDo.get();
+            newTodo.setWhenToDo(date);
+            toDoRepository.save(newTodo);
+            return new ResponseEntity(newTodo, HttpStatus.OK);
+        } return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
     }
 
 

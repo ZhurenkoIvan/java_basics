@@ -15,52 +15,33 @@ import java.util.Optional;
 @RestController
 public class ToDoController {
 
-    @Autowired
-    private ToDoRepository toDoRepository;
-
     @GetMapping("/ToDoList/")
     public List<ToDo> getToDoList() {
-        Iterable<ToDo> toDoIterable = toDoRepository.findAll();
-        ArrayList<ToDo> toDoArrayList = new ArrayList<>();
-        for (ToDo toDo : toDoIterable) {
-            toDoArrayList.add(toDo);
-        }
-        return toDoArrayList;
+        return ToDoList.getToDoList();
     }
 
     @GetMapping("/ToDoList/{id}")
     public ResponseEntity get(@PathVariable int id) {
-        Optional<ToDo> optionalToDo = toDoRepository.findById(id);
-        if (!optionalToDo.isPresent()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
-        }
-        return new ResponseEntity(optionalToDo.get(), HttpStatus.OK);
+       return ToDoList.getToDo(id);
     }
 
     @PostMapping("/ToDoList/")
     public int add(ToDo toDo) {
-        ToDo newTodo = toDoRepository.save(toDo);
-        return newTodo.getId();
+        return ToDoList.addToDo(toDo);
     }
 
     @DeleteMapping("/ToDoList/{id}")
     public void deleteToDo(@PathVariable int id) {
-        toDoRepository.deleteById(id);
+        ToDoList.deleteToDo(id);
     }
 
     @DeleteMapping("/ToDoList/")
     public void deleteToDoList() {
-        toDoRepository.deleteAll();
+        ToDoList.deleteToDoList();
     }
 
     @PutMapping("/ToDoList/{id}{newDate}")
     public ResponseEntity putToDo(@PathVariable int id, @PathVariable Date date) {
-        Optional<ToDo> optionalToDo = toDoRepository.findById(id);
-        if (optionalToDo.isPresent()){
-            ToDo newTodo = optionalToDo.get();
-           newTodo.setWhenToDo(date);
-           toDoRepository.save(newTodo);
-            return new ResponseEntity(newTodo, HttpStatus.OK);
-        } return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        return ToDoList.updateToDo(id, date);
     }
 }
