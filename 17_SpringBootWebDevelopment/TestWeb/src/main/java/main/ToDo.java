@@ -1,4 +1,4 @@
-package models;
+package main;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -11,6 +11,7 @@ public class ToDo {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
+
     private String name;
 
     public String getName() {
@@ -21,9 +22,13 @@ public class ToDo {
         this.name = name;
     }
 
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public int getId() {
         return id;
     }
 
 }
+

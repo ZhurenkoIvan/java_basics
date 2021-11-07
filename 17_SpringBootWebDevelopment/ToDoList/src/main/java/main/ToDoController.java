@@ -1,6 +1,6 @@
 package main;
 
-import models.ToDo;
+import main.models.ToDo;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
@@ -18,8 +18,8 @@ public class ToDoController {
        return ToDoList.getToDo(id);
     }
 
-    @PostMapping("/ToDoList/")
-    public int add(String name) {
+    @PostMapping("/ToDoList/{name}")
+    public int add(@PathVariable String name) {
         return ToDoList.addToDo(name);
     }
 

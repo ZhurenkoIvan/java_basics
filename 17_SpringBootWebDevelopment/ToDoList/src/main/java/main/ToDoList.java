@@ -1,7 +1,7 @@
 package main;
 
-import models.ToDo;
-import models.ToDoRepository;
+import main.models.ToDo;
+import main.models.ToDoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
