@@ -5,7 +5,6 @@ import models.ToDoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.ResponseStatus;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -18,7 +17,9 @@ public class ToDoList {
     private static int currentId = 1;
     private static ConcurrentHashMap<Integer, ToDo> toDoList = new ConcurrentHashMap<>();
 
-    public static int addToDo(ToDo toDo) {
+    public static int addToDo(String name) {
+        ToDo toDo = new ToDo();
+        toDo.setName(name);
         ToDo newTodo = toDoRepository.save(toDo);
         return newTodo.getId();
     }
@@ -48,11 +49,10 @@ public class ToDoList {
         toDoRepository.deleteAll();
     }
 
-    public static ResponseEntity updateToDo(int id, Date date) {
+    public static ResponseEntity updateToDo(int id) {
         Optional<ToDo> optionalToDo = toDoRepository.findById(id);
         if (optionalToDo.isPresent()){
             ToDo newTodo = optionalToDo.get();
-            newTodo.setWhenToDo(date);
             toDoRepository.save(newTodo);
             return new ResponseEntity(newTodo, HttpStatus.OK);
         } return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);

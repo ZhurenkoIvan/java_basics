@@ -1,16 +1,9 @@
 package main;
 
 import models.ToDo;
-import models.ToDoRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 public class ToDoController {
@@ -26,8 +19,8 @@ public class ToDoController {
     }
 
     @PostMapping("/ToDoList/")
-    public int add(ToDo toDo) {
-        return ToDoList.addToDo(toDo);
+    public int add(String name) {
+        return ToDoList.addToDo(name);
     }
 
     @DeleteMapping("/ToDoList/{id}")
@@ -40,8 +33,8 @@ public class ToDoController {
         ToDoList.deleteToDoList();
     }
 
-    @PutMapping("/ToDoList/{id}{newDate}")
-    public ResponseEntity putToDo(@PathVariable int id, @PathVariable Date date) {
-        return ToDoList.updateToDo(id, date);
+    @PutMapping("/ToDoList/{id}")
+    public ResponseEntity putToDo(@PathVariable int id) {
+        return ToDoList.updateToDo(id);
     }
 }
