@@ -11,20 +11,21 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class ToDoList {
 
-    @Autowired
-    private static ToDoRepository toDoRepository;
+    ToDoList(ToDoRepository toDoRepository) {
+        this.toDoRepository = toDoRepository;
+    }
 
-    private static int currentId = 1;
-    private static ConcurrentHashMap<Integer, ToDo> toDoList = new ConcurrentHashMap<>();
+    private ToDoRepository toDoRepository;
 
-    public static int addToDo(String name) {
+
+    public int addToDo(String name) {
         ToDo toDo = new ToDo();
         toDo.setName(name);
         ToDo newTodo = toDoRepository.save(toDo);
         return newTodo.getId();
     }
 
-    public static List<ToDo> getToDoList () {
+    public List<ToDo> getToDoList () {
         Iterable<ToDo> toDoIterable = toDoRepository.findAll();
         ArrayList<ToDo> toDoArrayList = new ArrayList<>();
         for (ToDo toDo : toDoIterable) {
@@ -33,23 +34,23 @@ public class ToDoList {
         return toDoArrayList;
     }
 
-    public static ResponseEntity getToDo(int toDoId) {
+    public ResponseEntity getToDo(int toDoId) {
         Optional<ToDo> optionalToDo = toDoRepository.findById(toDoId);
         if (!optionalToDo.isPresent()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Не найдено");
         }
         return new ResponseEntity(optionalToDo.get(), HttpStatus.OK);
     }
 
-    public static void deleteToDo(int toDoId) {
+    public void deleteToDo(int toDoId) {
         toDoRepository.deleteById(toDoId);
     }
 
-    public static void deleteToDoList() {
+    public void deleteToDoList() {
         toDoRepository.deleteAll();
     }
 
-    public static ResponseEntity updateToDo(int id) {
+    public ResponseEntity updateToDo(int id) {
         Optional<ToDo> optionalToDo = toDoRepository.findById(id);
         if (optionalToDo.isPresent()){
             ToDo newTodo = optionalToDo.get();
