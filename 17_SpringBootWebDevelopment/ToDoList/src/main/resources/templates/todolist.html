@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<h1>Список дел</h1>
+<div th:each="toDo: ${toDoArrayList}">
+    <a href="#" th:attr="data-id=${toDo.id}" th:text="${toDo.name}"></a>
+</div>
+</body>
+</html>
