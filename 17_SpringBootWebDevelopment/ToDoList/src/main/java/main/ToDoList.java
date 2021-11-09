@@ -2,25 +2,25 @@ package main;
 
 import main.models.ToDo;
 import main.models.ToDoRepository;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
+@Service
 public class ToDoList {
 
-    ToDoList(ToDoRepository toDoRepository) {
-        this.toDoRepository = toDoRepository;
-    }
-
+    @Autowired
     private ToDoRepository toDoRepository;
 
+    public int addToDo(JSONObject jsonObject) {
 
-    public int addToDo(String name) {
         ToDo toDo = new ToDo();
-        toDo.setName(name);
+        toDo.setName(jsonObject.getString("name"));
         ToDo newTodo = toDoRepository.save(toDo);
         return newTodo.getId();
     }
