@@ -9,7 +9,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
 
 @Service
 public class ToDoList {
@@ -17,10 +16,7 @@ public class ToDoList {
     @Autowired
     private ToDoRepository toDoRepository;
 
-    public int addToDo(JSONObject jsonObject) {
-
-        ToDo toDo = new ToDo();
-        toDo.setName(jsonObject.getString("name"));
+    public int addToDo(ToDo toDo) {
         ToDo newTodo = toDoRepository.save(toDo);
         return newTodo.getId();
     }

@@ -1,8 +1,6 @@
 package main;
 
 import main.models.ToDo;
-import main.models.ToDoRepository;
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -25,9 +23,8 @@ public class ToDoController {
     }
 
     @PostMapping("/ToDoList/")
-    public int add(@RequestBody String body) {
-        JSONObject jsonObject = new JSONObject(body);
-        return toDoList.addToDo(jsonObject);
+    public int add(@RequestBody ToDo toDo) {
+        return toDoList.addToDo(toDo);
     }
 
     @DeleteMapping("/ToDoList/{id}")
