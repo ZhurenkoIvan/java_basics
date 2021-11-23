@@ -5,6 +5,18 @@ import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import org.bson.BsonDocument;
 import org.bson.Document;
+import com.mongodb.DuplicateKeyException;
+import com.mongodb.MongoCommandException;
+import com.mongodb.client.*;
+import com.mongodb.client.model.IndexOptions;
+import com.mongodb.client.model.Indexes;
+import com.mongodb.client.model.Sorts;
+import com.mongodb.client.model.geojson.Point;
+import com.mongodb.client.model.geojson.Position;
+import org.bson.Document;
+import org.bson.conversions.Bson;
+import static com.mongodb.client.model.Filters.*;
+import static com.mongodb.client.model.Projections.*;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -78,6 +90,13 @@ public class Test {
         studentsMongo.find().sort(new BasicDBObject("Age", -1)).limit(1).forEach((Consumer<Document>) document -> {
                     System.out.println("Курсы самого возрастного студента: " + document.get("Courses"));
         });
+        String index = studentsMongo.createIndex(Indexes.ascending("Name"));
+        Bson filter = eq("Name", "Opal Squires");
+        Bson sort = Sorts.ascending("Name");
+        Bson projection = fields(include("Name"), excludeId());
+        FindIterable<Document> cursor = studentsMongo.find(filter).sort(sort).projection(projection);
+        cursor.forEach((Consumer<? super Document>) student -> System.out.println(student.get("Name")));
+
     }
 
 
