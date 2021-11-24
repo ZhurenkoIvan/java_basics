@@ -3,45 +3,21 @@ package com.skillbox.mongodemo;
 import com.mongodb.*;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
-import org.bson.BsonDocument;
 import org.bson.Document;
-import com.mongodb.DuplicateKeyException;
-import com.mongodb.MongoCommandException;
 import com.mongodb.client.*;
-import com.mongodb.client.model.IndexOptions;
 import com.mongodb.client.model.Indexes;
 import com.mongodb.client.model.Sorts;
-import com.mongodb.client.model.geojson.Point;
-import com.mongodb.client.model.geojson.Position;
-import org.bson.Document;
 import org.bson.conversions.Bson;
 import static com.mongodb.client.model.Filters.*;
 import static com.mongodb.client.model.Projections.*;
-
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.function.Consumer;
-
 import com.mongodb.MongoClient;
 
-import com.mongodb.client.MongoDatabase;
-import com.mongodb.client.MongoCollection;
-
-import org.bson.Document;
-import java.util.Arrays;
-
-import com.mongodb.client.MongoCursor;
-import static com.mongodb.client.model.Filters.*;
-import com.mongodb.client.result.DeleteResult;
-import static com.mongodb.client.model.Updates.*;
-import com.mongodb.client.result.UpdateResult;
-import java.util.ArrayList;
-import java.util.List;
 
 public class Test {
 
