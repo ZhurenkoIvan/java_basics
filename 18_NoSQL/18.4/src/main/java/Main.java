@@ -1,6 +1,7 @@
 import com.mongodb.MongoClient;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
+import com.mongodb.util.JSON;
 import org.bson.Document;
 import com.mongodb.*;
 import com.mongodb.client.MongoCollection;
@@ -16,11 +17,13 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.function.Consumer;
 import com.mongodb.MongoClient;
 
 public class Main {
+    private String REGEX = "[\\[.+]";
     public static void main(String[] args) {
         MongoClient mongoClient = new MongoClient( "127.0.0.1" , 27017 );
 
@@ -60,11 +63,11 @@ public class Main {
     }
 
     private static void addGoodToShop(MongoCollection<Document> shops, MongoCollection<Document> goods, String shopsName, String goodsName) {
-        List<Document> shopList = (List<Document>) shops.find(eq("Name", shopsName));
-        Document shop = shopList.get(0);
-        ArrayList<Document> goodsInShop = (ArrayList<Document>) shop.get("Goods");
-        goodsInShop.add((Document) shops.find(eq("Name", goodsName)));
-        shops.findOneAndUpdate(eq("Name", shopsName), new Document().append("Name", shopsName).append("Goods", goodsInShop));
+        Iterator<Document> shopList = (Iterator<Document>) shops.find(eq("Name", shopsName)).iterator();
+        Document shop = shopList.next();
+        List<Document> goodsList = new ArrayList<>();
+        goodsList = (List<Document>) shop.get("Goods");
+
     }
 
     private static void getAllGoodsInShop( MongoCollection<Document> shops, String shop) {
