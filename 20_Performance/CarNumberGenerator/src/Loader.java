@@ -1,4 +1,3 @@
-import java.io.FileOutputStream;
 import java.io.PrintWriter;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -12,8 +11,8 @@ public class Loader {
 
 
         char[] letters = {'У', 'К', 'Е', 'Н', 'Х', 'В', 'А', 'Р', 'О', 'С', 'М', 'Т'};
-        ExecutorService executor = Executors.newFixedThreadPool(10);
-        for (int regionCode = 1; regionCode < 100; regionCode++) {
+        ExecutorService executor = Executors.newFixedThreadPool(3);
+        for (int regionCode = 1; regionCode < 10; regionCode++) {
             NumberGenerator numberGenerator = new NumberGenerator(writer, letters, regionCode);
             executor.execute(numberGenerator);
         }

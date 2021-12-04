@@ -13,10 +13,10 @@ public class NumberGenerator implements Runnable{
                 for (char secondLetter : letters) {
                     for (char thirdLetter : letters) {
                         builder.append(firstLetter);
-                        builder.append(padNumber(number, 3));
+                        padNumber(number, 3, builder);
                         builder.append(secondLetter);
                         builder.append(thirdLetter);
-                        builder.append(padNumber(regionCode, 2));
+                        padNumber(regionCode, 2, builder);
                         builder.append("\n");
 
                     }
@@ -36,14 +36,23 @@ public class NumberGenerator implements Runnable{
         this.regionCode = regionCode;
     }
 
-    private String padNumber(int number, int numberLength) {
+    private String padNumber(int number, int numberLength, StringBuilder builder) {
         String numberStr = Integer.toString(number);
         int padSize = numberLength - numberStr.length();
 
         for (int i = 0; i < padSize; i++) {
-            numberStr = '0' + numberStr;
+           builder.append(0);
         }
+        builder.append(number);
 
         return numberStr;
+//        String numberStr = Integer.toString(number);
+//        int padSize = numberLength - numberStr.length();
+//
+//        for (int i = 0; i < padSize; i++) {
+//            numberStr = '0' + numberStr;
+//        }
+//
+//        return numberStr;
     }
 }
