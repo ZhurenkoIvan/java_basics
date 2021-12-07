@@ -20,5 +20,6 @@ public class Loader {
         while (!executor.isTerminated()) {}
         writer.close();
         System.out.println((System.currentTimeMillis() - start) + " ms");
+        System.out.println(NumberGenerator.threadsCount);
     }
 }

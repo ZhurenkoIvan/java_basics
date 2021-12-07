@@ -4,11 +4,12 @@ public class NumberGenerator implements Runnable{
     final PrintWriter writer;
     char[] letters;
     int regionCode;
+    StringBuilder builder;
+    public static int threadsCount = 0;
 
     @Override
     public void run() {
         for (int number = 1; number < 1000; number++) {
-            StringBuilder builder = new StringBuilder();
             for (char firstLetter : letters) {
                 for (char secondLetter : letters) {
                     for (char thirdLetter : letters) {
@@ -26,6 +27,7 @@ public class NumberGenerator implements Runnable{
                 writer.write(builder.toString());
                 writer.flush();
             }
+            builder.delete(0,builder.length());
         }
 
     }
@@ -34,6 +36,8 @@ public class NumberGenerator implements Runnable{
         this.writer = writer;
         this.letters = letters;
         this.regionCode = regionCode;
+        builder = new StringBuilder();
+        threadsCount++;
     }
 
     private String padNumber(int number, int numberLength, StringBuilder builder) {
