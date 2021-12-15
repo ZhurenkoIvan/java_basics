@@ -5,7 +5,7 @@ public class NumberGenerator implements Runnable{
     char[] letters;
     int regionCode;
     StringBuilder builder;
-    public static int threadsCount = 0;
+//    public static int threadsCount = 0;
 
     @Override
     public void run() {
@@ -37,7 +37,7 @@ public class NumberGenerator implements Runnable{
         this.letters = letters;
         this.regionCode = regionCode;
         builder = new StringBuilder();
-        threadsCount++;
+//        threadsCount++;
     }
 
     private String padNumber(int number, int numberLength, StringBuilder builder) {
