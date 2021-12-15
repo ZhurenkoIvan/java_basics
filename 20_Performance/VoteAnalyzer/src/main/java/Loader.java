@@ -24,13 +24,10 @@ public class Loader {
     public static void main(String[] args) throws Exception {
         String fileName = "res/data-18M.xml";
 //        -----------------------------------------------------------------------------------
-        long usage = Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory();
         parseFile(fileName);
 
         //Printing results
-        DBConnection.printVoterCounts();
-        usage = Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory() - usage;
-        System.out.println(usage);
+//        DBConnection.printVoterCounts();
 
 //        System.out.println("Voting station work times: ");
 //        for (Integer votingStation : voteStationWorkTimes.keySet()) {
@@ -52,35 +49,41 @@ public class Loader {
 //
     private static void parseFile(String fileName) throws Exception {
 
-        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-        DocumentBuilder db = dbf.newDocumentBuilder();
-        Document doc = db.parse(new File(fileName));
+        SAXParserFactory factory = SAXParserFactory.newInstance();
+        SAXParser parser = factory.newSAXParser();
+        XMLHandler handler = new XMLHandler();
+        parser.parse(new File(fileName), handler);
+        handler.executePreparedStatement();
 
-        findEqualVoters(doc);
+//        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+//        DocumentBuilder db = dbf.newDocumentBuilder();
+//        Document doc = db.parse(new File(fileName));
+
+//        findEqualVoters(doc);
 
 
 //        fixWorkTimes(doc);
     }
 //
-    private static void findEqualVoters(Document doc) throws Exception {
-        NodeList voters = doc.getElementsByTagName("voter");
-        int votersCount = voters.getLength();
-        for (int i = 0; i < votersCount; i++) {
-            Node node = voters.item(i);
-            NamedNodeMap attributes = node.getAttributes();
-
-            String name = attributes.getNamedItem("name").getNodeValue();
-            String birthDate = attributes.getNamedItem("birthDay").getNodeValue();
-            DBConnection.countVoter(name, birthDate);
-//            Date birthDay = birthDayFormat
-//                .parse(attributes.getNamedItem("birthDay").getNodeValue());
-
-//            Voter voter = new Voter(name, birthDay);
-//            Integer count = voterCounts.get(voter);
-//            voterCounts.put(voter, count == null ? 1 : count + 1);
-        }
-        DBConnection.executePreparedStatement();
-    }
+//    private static void findEqualVoters(Document doc) throws Exception {
+//        NodeList voters = doc.getElementsByTagName("voter");
+//        int votersCount = voters.getLength();
+//        for (int i = 0; i < votersCount; i++) {
+//            Node node = voters.item(i);
+//            NamedNodeMap attributes = node.getAttributes();
+//
+//            String name = attributes.getNamedItem("name").getNodeValue();
+//            String birthDate = attributes.getNamedItem("birthDay").getNodeValue();
+//            DBConnection.countVoter(name, birthDate);
+////            Date birthDay = birthDayFormat
+////                .parse(attributes.getNamedItem("birthDay").getNodeValue());
+//
+////            Voter voter = new Voter(name, birthDay);
+////            Integer count = voterCounts.get(voter);
+////            voterCounts.put(voter, count == null ? 1 : count + 1);
+//        }
+//        DBConnection.executePreparedStatement();
+//    }
 
     private static void fixWorkTimes(Document doc) throws Exception {
         NodeList visits = doc.getElementsByTagName("visit");

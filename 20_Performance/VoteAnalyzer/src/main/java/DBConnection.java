@@ -32,22 +32,22 @@ public class DBConnection {
         return connection;
     }
 
-    public static void countVoter(String name, String birthDay) throws SQLException {
-        if (preparedStatement == null) {
-            String sql = "INSERT INTO voter_count(name, birthDate, `count`) VALUES(?, ?, ?) ON DUPLICATE KEY UPDATE `count`=`count` + 1";
-            preparedStatement = getConnection().prepareStatement(sql);
-        }
-        birthDay = birthDay.replace('.', '-');
-        preparedStatement.setString(1, name);
-        preparedStatement.setString(2, birthDay);
-        preparedStatement.setInt(3, 1);
-        preparedStatement.addBatch();
-    }
+//    public static void countVoter(String name, String birthDay) throws SQLException {
+//        if (preparedStatement == null) {
+//            String sql = "INSERT INTO voter_count(name, birthDate, `count`) VALUES(?, ?, ?) ON DUPLICATE KEY UPDATE `count`=`count` + 1";
+//            preparedStatement = getConnection().prepareStatement(sql);
+//        }
+//        birthDay = birthDay.replace('.', '-');
+//        preparedStatement.setString(1, name);
+//        preparedStatement.setString(2, birthDay);
+//        preparedStatement.setInt(3, 1);
+//        preparedStatement.addBatch();
+//    }
 
-    public static void executePreparedStatement() throws SQLException {
-        preparedStatement.executeBatch();
-        printVoterCounts();
-    }
+//    public static void executePreparedStatement() throws SQLException {
+//        preparedStatement.executeBatch();
+//        printVoterCounts();
+//    }
 
 //    public static void executeMultiInsert() throws SQLException {
 //        String sql = "INSERT INTO voter_count(name, birthDate, `count`) " +
@@ -77,13 +77,13 @@ public class DBConnection {
 //        rs.close();
 //    }
 
-    public static void printVoterCounts() throws SQLException {
-        String sql = "SELECT name, birthDate, `count` FROM voter_count WHERE `count` > 1";
-        ResultSet rs = DBConnection.getConnection().createStatement().executeQuery(sql);
-        while (rs.next()) {
-            System.out.println("\t" + rs.getString("name") + " (" +
-                rs.getString("birthDate") + ") - " + rs.getInt("count"));
-        }
-        rs.close();
-    }
+//    public static void printVoterCounts() throws SQLException {
+//        String sql = "SELECT name, birthDate, `count` FROM voter_count WHERE `count` > 1";
+//        ResultSet rs = DBConnection.getConnection().createStatement().executeQuery(sql);
+//        while (rs.next()) {
+//            System.out.println("\t" + rs.getString("name") + " (" +
+//                rs.getString("birthDate") + ") - " + rs.getInt("count"));
+//        }
+//        rs.close();
+//    }
 }
