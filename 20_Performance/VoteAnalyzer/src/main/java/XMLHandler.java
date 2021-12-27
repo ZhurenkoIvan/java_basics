@@ -9,6 +9,7 @@ import java.sql.SQLException;
 
 public class XMLHandler extends DefaultHandler {
     private static PreparedStatement preparedStatement;
+    private static int statementCount = 0;
 
 
     public XMLHandler() throws SQLException {
@@ -21,6 +22,11 @@ public class XMLHandler extends DefaultHandler {
     public void startElement(String uri, String localName, String qName, Attributes attributes) {
         if (qName.equals("voter")) {
             try {
+                if (statementCount == 500) {
+                    preparedStatement.executeBatch();
+                    statementCount = 0;
+                }
+                statementCount++;
                 String birthDay = attributes.getValue("birthDay");
                 birthDay = birthDay.replace('.', '-');
                 preparedStatement.setString(1, attributes.getValue("name"));
@@ -38,7 +44,7 @@ public class XMLHandler extends DefaultHandler {
     }
 
     public void executePreparedStatement() throws SQLException {
-        preparedStatement.executeBatch();
+//        preparedStatement.executeBatch();
         printVoterCounts();
     }
 

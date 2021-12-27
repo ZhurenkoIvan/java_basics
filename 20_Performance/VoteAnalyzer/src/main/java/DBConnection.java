@@ -16,10 +16,9 @@ public class DBConnection {
                         "?user=" + dbUser + "&password=" + dbPass);
                 connection.createStatement().execute("DROP TABLE IF EXISTS voter_count");
                 connection.createStatement().execute("CREATE TABLE voter_count(" +
-                    "id INT NOT NULL AUTO_INCREMENT, " +
+                    "id INT PRIMARY KEY AUTO_INCREMENT, " +
                     "name TINYTEXT NOT NULL, " +
-                    "birthDate DATE NOT NULL, " +
-                    "PRIMARY KEY(id))");
+                    "birthDate DATE NOT NULL)");
             } catch (SQLException e) {
                 e.printStackTrace();
             }
