@@ -16,7 +16,7 @@ public class Searcher extends RecursiveAction {
     private static HashSet<String> hs = new HashSet<>();
     private static Set<String> AllURLS = Collections.synchronizedSet(hs);
     private String url;
-    private String path;
+    private String path ="";
     private static int COUNT = 1;
 
     public Searcher(String url) {
@@ -31,7 +31,7 @@ public class Searcher extends RecursiveAction {
     @Override
     protected void compute() {
         try {
-            Document doc = Jsoup.connect(this.url)
+            Document doc = Jsoup.connect(this.url + path)
 //                    .userAgent("Mozilla/5.0 (Windows; U; WindowsNT 5.1; en-US; rv1.8.1.6) Gecko/20070725 Firefox/2.0.0.6")
 //                    .referrer("http://www.google.com")
                     .get();
@@ -39,13 +39,14 @@ public class Searcher extends RecursiveAction {
             HashSet<String> urls = new HashSet<>();
             jsoupURLS.forEach(url -> {
                 String path = url.attr("href");
-                if (!AllURLS.contains(path) && path.contains(".html")) {
+                if (!AllURLS.contains("/" + path) && path.contains(".html")) {
                     urls.add(url.attr("href"));
                 }
             });
             AllURLS.addAll(urls);
             for (String url : urls) {
                 System.out.println(COUNT);
+                System.out.println(AllURLS.size());
                 COUNT++;
                 String path = url.substring(1);
                 Searcher searcher = new Searcher(this.url, path);
