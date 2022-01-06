@@ -4,7 +4,7 @@ public class DBConnection {
 
     private static Connection connection;
 
-    private static String dbName = "learn";
+    private static String dbName = "page";
     private static String dbUser = "root";
     private static String dbPass = "Vitylin97";
 
