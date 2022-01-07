@@ -79,7 +79,7 @@ public class Indexer {
         }
         int pathsCount = 0;
         while (rsPages.next()) {
-            if (pathsCount > 30) {
+            if (pathsCount > 5) {
                 prSt_Index.executeBatch();
                 pathsCount = 1;
             }
@@ -93,6 +93,7 @@ public class Indexer {
             HashMap<String, Integer> bodyMap = bodyLemma.getLemmas();
             addPreparedStatement(lemmaIdMap, titleMap, tagsWeight.get("title"), page_id );
             addPreparedStatement(lemmaIdMap, bodyMap, tagsWeight.get("body"), page_id );
+            pathsCount++;
 
         }
         prSt_Index.executeBatch();
