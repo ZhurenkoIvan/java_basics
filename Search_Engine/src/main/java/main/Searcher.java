@@ -6,25 +6,29 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.io.IOException;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.RecursiveAction;
 
 public class Searcher extends RecursiveAction {
-    private static Set<String> set = new HashSet<>();
-    private static Set<String> AllURLS = Collections.synchronizedSet(set);
+    private static final Set<String> set = new HashSet<>();
+    private static final Set<String> AllURLS = Collections.synchronizedSet(set);
     private final String URL;
     private String path ="/";
     private static PreparedStatement prStPages;
-    private static int statementSize = 0;
+    private static final Connection connection = DBConnection.getConnection();
+
 
     public Searcher(String url) throws SQLException {
         this.URL = url.substring(0, url.length()-1);
-        String sql = "INSERT INTO page(path, code, content) VALUES(?, ?, ?)";
-        prStPages = DBConnection.getConnection().prepareStatement(sql);
+        String sqlPages = "INSERT INTO page(path, code, content) VALUES(?, ?, ?) " +
+                "ON DUPLICATE KEY UPDATE content = (?)";
+        prStPages = connection.prepareStatement(sqlPages);
+
+
     }
 
     private Searcher (String url, String path) {
@@ -39,6 +43,8 @@ public class Searcher extends RecursiveAction {
                     .userAgent("Mozilla/5.0 (Windows; U; WindowsNT 5.1; en-US; rv1.8.1.6) Gecko/20070725 Firefox/2.0.0.6")
                     .referrer("http://www.google.com")
                     .get();
+
+            //Заполняю pages
             Elements jsoupURLS = doc.select("a[href]");
             for (Element element : jsoupURLS) {
                 String path = element.attr("href");
@@ -50,6 +56,7 @@ public class Searcher extends RecursiveAction {
                     prStPages.setString(1, path);
                     prStPages.setInt(2, code);
                     prStPages.setString(3, doc.html());
+                    prStPages.setString(4, doc.html());
                     prStPages.addBatch();
                     AllURLS.add(path);
                     Searcher searcher = new Searcher(this.URL, path);
@@ -69,9 +76,5 @@ public class Searcher extends RecursiveAction {
             System.out.println(url);
         }
         System.out.println(AllURLS.size() + " размер");
-    }
-
-    private void executePages() {
-
     }
 }

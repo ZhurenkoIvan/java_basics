@@ -1,28 +1,52 @@
 package main;
 
 import org.apache.lucene.morphology.LuceneMorphology;
+import org.apache.lucene.morphology.english.EnglishLuceneMorphology;
 import org.apache.lucene.morphology.russian.RussianLuceneMorphology;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class Lemmatizator {
-    private String text;
+    private final String text;
 
     public Lemmatizator(String text) {
         this.text = text;
     }
 
-    public HashMap<String, Integer> morphText () throws IOException {
-        String[] wordsList = text.split("[ ,.]{1,2}");
-        LuceneMorphology luceneMorphology = new RussianLuceneMorphology();
+    public HashMap<String, Integer> getLemmas () throws IOException {
+        HashSet<String> engWords = new HashSet<>();
+        HashSet<String> rusWords = new HashSet<>();
+
+        Pattern pEng = Pattern.compile("[A-z]{2,}");
+        Pattern pRus = Pattern.compile("[А-яёЁ]{2,}");
+        Matcher engMatcher = pEng.matcher(text);
+        Matcher rusMatcher = pRus.matcher(text);
+        while (engMatcher.find()) {
+            engWords.add(engMatcher.group());
+        }
+        while (rusMatcher.find()) {
+            rusWords.add(rusMatcher.group());
+        }
+        LuceneMorphology russianLuceneMorphology = new RussianLuceneMorphology();
+        LuceneMorphology englishLuceneMorphology = new EnglishLuceneMorphology();
         HashMap<String, Integer> lemmWords = new HashMap<>();
-        for (String s : wordsList) {
-            String morph = luceneMorphology.getMorphInfo(s.toLowerCase(Locale.ROOT)).get(0);
-            String word = luceneMorphology.getNormalForms(s.toLowerCase(Locale.ROOT)).get(0);
+        for (String s : rusWords) {
+            String morph = russianLuceneMorphology.getMorphInfo(s.toLowerCase(Locale.ROOT)).get(0);
+            String word = russianLuceneMorphology.getNormalForms(s.toLowerCase(Locale.ROOT)).get(0).replace('ё','е');
+            if (!morph.contains("СОЮЗ") && !morph.contains("ПРЕДЛ")) {
+                if (lemmWords.containsKey(word)) {
+                    lemmWords.put(word, lemmWords.get(word) + 1);
+                } else {
+                    lemmWords.put(word, 1);
+                }
+            }
+        }
+        for (String s : engWords) {
+            String morph = englishLuceneMorphology.getMorphInfo(s.toLowerCase(Locale.ROOT)).get(0);
+            String word = englishLuceneMorphology.getNormalForms(s.toLowerCase(Locale.ROOT)).get(0).replace('ё','е');
             if (!morph.contains("СОЮЗ") && !morph.contains("ПРЕДЛ")) {
                 if (lemmWords.containsKey(word)) {
                     lemmWords.put(word, lemmWords.get(word) + 1);
