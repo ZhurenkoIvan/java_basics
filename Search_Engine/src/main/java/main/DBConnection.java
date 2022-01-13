@@ -1,6 +1,7 @@
 package main;
 import java.sql.*;
 
+//Используется для создания соединения с базой данных
 public class DBConnection {
 
     private static Connection connection;
@@ -36,22 +37,6 @@ public class DBConnection {
                         "ON DUPLICATE KEY UPDATE weight = 1.0");
                 connection.createStatement().execute("INSERT INTO field(name, selector, weight) VALUES(\"body\", \"body\", 0.8) " +
                         "ON DUPLICATE KEY UPDATE weight = 0.8");
-
-                connection.createStatement().execute("DROP TABLE lemma");
-                connection.createStatement().execute("CREATE TABLE lemma (" +
-                        "PRIMARY KEY(id), id INT NOT NULL AUTO_INCREMENT, " +
-                        "lemma VARCHAR(255) NOT NULL, " +
-                        "frequency INT NOT NULL, " +
-                        "UNIQUE (lemma))");
-
-                connection.createStatement().execute("DROP TABLE _index");
-                connection.createStatement().execute("CREATE TABLE IF NOT EXISTS _index (" +
-                        "PRIMARY KEY(id), id INT NOT NULL AUTO_INCREMENT, " +
-                        "page_id INT NOT NULL, " +
-                        "lemma_id INT NOT NULL, " +
-                        "_rank FLOAT NOT NULL, " +
-                        "UNIQUE (page_id, lemma_id))");
-
 
             } catch (SQLException e) {
                 e.printStackTrace();

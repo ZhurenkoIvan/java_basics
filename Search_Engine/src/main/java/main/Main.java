@@ -1,31 +1,33 @@
 package main;
 
-import com.fasterxml.jackson.databind.util.JSONPObject;
-import org.apache.lucene.morphology.LuceneMorphology;
-import org.apache.lucene.morphology.russian.RussianLuceneMorphology;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.select.Elements;
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.concurrent.ForkJoinPool;
 
 
 public class Main {
     public static void main(String[] args) throws IOException, SQLException {
-        Searcher searcher = new Searcher("http://www.playback.ru/");
-        ForkJoinPool forkJoinPool = new ForkJoinPool();
-        forkJoinPool.invoke(searcher);
 
-       Indexer indexer = new Indexer();
-       indexer.addLemmas();
-       indexer.addIndexes();
+        Searcher searcher = new Searcher();
+        ArrayList<LinkInfo> arrayList = searcher.listOfLinks("купить чехол для смартфона Huawei");
+        arrayList.forEach(System.out::println);
+        System.out.println(arrayList.size());
+
+//       Parser parser = new Parser("http://www.playback.ru/");
+//       ForkJoinPool forkJoinPool = new ForkJoinPool();
+//       forkJoinPool.invoke(parser);
+//
+//       LemmaParser lemmaParser = new LemmaParser();
+//       lemmaParser.addLemmas();
+
+//       Indexer indexer = new Indexer();
+//       indexer.addIndexes();
+
+
 
 //        String text = "Повторное появление леопарда в Осетии позволяет предположить, что леопард ПОСТоянно обитает в НЕКОТОРЫХ райоНАх Северного Кавказа.";
 //        Lemmatizator lemmatizator = new Lemmatizator(text);

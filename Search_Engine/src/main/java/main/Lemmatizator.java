@@ -9,6 +9,7 @@ import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+//Разбивает полученный текст на леммы как русские, так и английские. При это не записывает союзы, частицы и предлоги.
 public class Lemmatizator {
     private final String text;
 
