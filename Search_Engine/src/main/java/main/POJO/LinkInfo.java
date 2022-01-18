@@ -1,4 +1,4 @@
-package main;
+package main.POJO;
 
 public class LinkInfo {
     private String uri;

@@ -1,5 +1,7 @@
 package main;
 
+import main.SQL.DBConnection;
+import main.SQL.SQLEditor;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
@@ -25,13 +27,7 @@ public class LemmaParser {
     }
 
     public void addLemmas() throws SQLException, IOException {
-        connection.createStatement().execute("DROP TABLE lemma");
-        connection.createStatement().execute("CREATE TABLE lemma (" +
-                "PRIMARY KEY(id), id INT NOT NULL AUTO_INCREMENT, " +
-                "lemma VARCHAR(255) NOT NULL, " +
-                "frequency INT NOT NULL, " +
-                "UNIQUE (lemma))");
-
+        SQLEditor.createNewLemma();
         ResultSet rsPages = connection.createStatement().executeQuery("SELECT content FROM search_engine.page");
         int pathsCount = 0;
         while (rsPages.next()) {
@@ -42,26 +38,24 @@ public class LemmaParser {
             //Добавление лемм
             Document contentDoc = Jsoup.parse(rsPages.getString("content"));
             String title = contentDoc.title();
-            String body = contentDoc.text();
+            String body = contentDoc.body().text();
             Lemmatizator titleLemma = new Lemmatizator(title);
             Lemmatizator bodyLemma = new Lemmatizator(body);
             HashMap<String, Integer> titleMap = titleLemma.getLemmas();
             HashMap<String, Integer> bodyMap = bodyLemma.getLemmas();
-            for (String key : titleMap.keySet()) {
-                prStLemma.setString(1, key);
-                prStLemma.setInt(2, 1);
-                prStLemma.addBatch();
-            }
-            for (String key : bodyMap.keySet()) {
-                prStLemma.setString(1,key);
-                prStLemma.setInt(2, 1);
-                prStLemma.addBatch();
-            }
-
-
+            addToPrSt(titleMap);
+            addToPrSt(bodyMap);
             pathsCount++;
 
         }
         prStLemma.executeBatch();
+    }
+
+    private void addToPrSt( HashMap<String, Integer> map) throws SQLException {
+        for (String key : map.keySet()) {
+            prStLemma.setString(1, key);
+            prStLemma.setInt(2, 1);
+            prStLemma.addBatch();
+        }
     }
 }

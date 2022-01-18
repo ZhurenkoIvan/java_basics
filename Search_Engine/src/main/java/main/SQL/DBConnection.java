@@ -1,4 +1,4 @@
-package main;
+package main.SQL;
 import java.sql.*;
 
 //Используется для создания соединения с базой данных

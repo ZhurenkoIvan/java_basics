@@ -1,5 +1,10 @@
 package main;
 
+import main.POJO.Lemma;
+import main.POJO.Page;
+import main.SQL.DBConnection;
+import main.SQL.SQLEditor;
+import main.SQL.SQLGetter;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
@@ -9,6 +14,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
+import java.util.HashSet;
 
 //Получает данные из таблиц lemma и page. Индексирует их и записывает в таблицу _index
 public class Indexer {
@@ -26,50 +32,35 @@ public class Indexer {
     }
 
     public void addIndexes() throws SQLException, IOException {
-        connection.createStatement().execute("DROP TABLE _index");
-        connection.createStatement().execute("CREATE TABLE _index (" +
-                "PRIMARY KEY(id), id INT NOT NULL AUTO_INCREMENT, " +
-                "page_id INT NOT NULL, " +
-                "lemma_id INT NOT NULL, " +
-                "_rank FLOAT NOT NULL, " +
-                "UNIQUE (page_id, lemma_id))");
-        ResultSet tagsList = connection.createStatement().executeQuery("SELECT selector, weight FROM search_engine.field");
-        HashMap<String, Float> tagsWeight = new HashMap<>();
-        while (tagsList.next()) {
-            String tag = tagsList.getString(1);
-            Float weight = tagsList.getFloat(2);
-            tagsWeight.put(tag, weight);
-        }
-        ResultSet rsPages = connection.createStatement().executeQuery("SELECT * FROM search_engine.page");
-        ResultSet rsLemmas = connection.createStatement().executeQuery("SELECT * FROM search_engine.lemma");
+        SQLEditor.createNewIndex();
+        HashMap<String, Float> tagsWeight = SQLGetter.getTagsWeight();
+        HashSet<Lemma> lemmaSet = SQLGetter.getLemmas();
+        HashSet<Page> pages = SQLGetter.getPages();
         HashMap<String, Integer> lemmaIdMap = new HashMap<>();
-        while (rsLemmas.next()) {
-            String lemma = rsLemmas.getString("lemma");
-            int id = rsLemmas.getInt("id");
-            lemmaIdMap.put(lemma, id);
+        for (Lemma lemma : lemmaSet) {
+            lemmaIdMap.put(lemma.getLemmasName(), lemma.getId());
         }
         int pathsCount = 1;
-        while (rsPages.next()) {
+        for (Page page : pages) {
             if (pathsCount > 5) {
                 prSt_Index.executeBatch();
                 pathsCount = 1;
             }
-            Document contentDoc = Jsoup.parse(rsPages.getString("content"));
-            int page_id = rsPages.getInt("id");
+            Document contentDoc = Jsoup.parse(page.getContent());
             String title = contentDoc.title();
-            String body = contentDoc.text();
+            String body = contentDoc.body().text();
             Lemmatizator titleLemma = new Lemmatizator(title);
             Lemmatizator bodyLemma = new Lemmatizator(body);
             HashMap<String, Integer> titleMap = titleLemma.getLemmas();
             HashMap<String, Integer> bodyMap = bodyLemma.getLemmas();
-            addPreparedStatement(lemmaIdMap, titleMap, tagsWeight.get("title"), page_id );
-            addPreparedStatement(lemmaIdMap, bodyMap, tagsWeight.get("body"), page_id );
+            addToPrSt(lemmaIdMap, titleMap, tagsWeight.get("title"), page.getId() );
+            addToPrSt(lemmaIdMap, bodyMap, tagsWeight.get("body"), page.getId() );
             pathsCount++;
         }
         prSt_Index.executeBatch();
     }
 
-    private void addPreparedStatement(HashMap<String, Integer> lemmaIdMap, HashMap<String, Integer> tagMap, float weight, int page_id ) throws SQLException {
+    private void addToPrSt(HashMap<String, Integer> lemmaIdMap, HashMap<String, Integer> tagMap, float weight, int page_id ) throws SQLException {
         for (String key : tagMap.keySet()) {
             Integer lemma_id = lemmaIdMap.get(key);
             float rank = tagMap.get(key).floatValue() * weight;
@@ -79,7 +70,5 @@ public class Indexer {
             prSt_Index.setFloat(4, rank);
             prSt_Index.addBatch();
         }
-
     }
-
 }

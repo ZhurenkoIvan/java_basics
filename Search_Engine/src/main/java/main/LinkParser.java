@@ -1,5 +1,6 @@
 package main;
 
+import main.SQL.DBConnection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -13,7 +14,7 @@ import java.util.Set;
 import java.util.concurrent.RecursiveAction;
 
 //Проходит по всем ссылкам на сайте и парсит их в таблицу page
-public class Parser extends RecursiveAction {
+public class LinkParser extends RecursiveAction {
     private static final Set<String> set = new HashSet<>();
     private static final Set<String> AllURLS = Collections.synchronizedSet(set);
     private final String URL;
@@ -22,16 +23,14 @@ public class Parser extends RecursiveAction {
     private static final Connection connection = DBConnection.getConnection();
 
 
-    public Parser(String url) throws SQLException {
+    public LinkParser(String url) throws SQLException {
         this.URL = url.substring(0, url.length()-1);
         String sqlPages = "INSERT INTO page(path, code, content) VALUES(?, ?, ?) " +
                 "ON DUPLICATE KEY UPDATE content = (?)";
         prStPages = connection.prepareStatement(sqlPages);
-
-
     }
 
-    private Parser(String url, String path) {
+    private LinkParser(String url, String path) {
         this.URL = url;
         this.path = path;
     }
@@ -59,7 +58,7 @@ public class Parser extends RecursiveAction {
                     prStPages.setString(4, doc.html());
                     prStPages.addBatch();
                     AllURLS.add(path);
-                    Parser searcher = new Parser(this.URL, path);
+                    LinkParser searcher = new LinkParser(this.URL, path);
                     searcher.fork();
                     searcher.join();
                 }

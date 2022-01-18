@@ -1,33 +1,27 @@
 package main;
 
+import main.POJO.LinkInfo;
+
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.Map;
 import java.util.concurrent.ForkJoinPool;
-
 
 public class Main {
     public static void main(String[] args) throws IOException, SQLException {
+        LinkParser parser = new LinkParser("http://www.playback.ru/");
+        ForkJoinPool forkJoinPool = new ForkJoinPool();
+        forkJoinPool.invoke(parser);
+
+        LemmaParser lemmaParser = new LemmaParser();
+        lemmaParser.addLemmas();
+
+        Indexer indexer = new Indexer();
+        indexer.addIndexes();
 
         Searcher searcher = new Searcher();
-        ArrayList<LinkInfo> arrayList = searcher.listOfLinks("купить чехол для смартфона Huawei");
-        arrayList.forEach(System.out::println);
-        System.out.println(arrayList.size());
-
-//       Parser parser = new Parser("http://www.playback.ru/");
-//       ForkJoinPool forkJoinPool = new ForkJoinPool();
-//       forkJoinPool.invoke(parser);
-//
-//       LemmaParser lemmaParser = new LemmaParser();
-//       lemmaParser.addLemmas();
-
-//       Indexer indexer = new Indexer();
-//       indexer.addIndexes();
-
-
+        ArrayList<LinkInfo> linksList = searcher.listOfLinks("Купить смартфон apple");
+        linksList.forEach(System.out::println);
 
 //        String text = "Повторное появление леопарда в Осетии позволяет предположить, что леопард ПОСТоянно обитает в НЕКОТОРЫХ райоНАх Северного Кавказа.";
 //        Lemmatizator lemmatizator = new Lemmatizator(text);
@@ -41,9 +35,5 @@ public class Main {
 //                .referrer("http://www.google.com")
 //                .get();
 //        System.out.println(doc.text());
-
-
-
-
     }
 }
