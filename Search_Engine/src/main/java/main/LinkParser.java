@@ -13,7 +13,9 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.RecursiveAction;
 
-//Проходит по всем ссылкам на сайте и парсит их в таблицу page
+/**
+ * Проходит по всем ссылкам на сайте и парсит их в таблицу page
+ */
 public class LinkParser extends RecursiveAction {
     private static final Set<String> set = new HashSet<>();
     private static final Set<String> AllURLS = Collections.synchronizedSet(set);

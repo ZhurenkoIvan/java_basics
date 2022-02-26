@@ -1,4 +1,4 @@
-package main.POJO;
+package main.Domain;
 
 public class Page {
     private String path;

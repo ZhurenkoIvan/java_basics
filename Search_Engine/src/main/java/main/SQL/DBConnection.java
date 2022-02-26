@@ -6,9 +6,9 @@ public class DBConnection {
 
     private static Connection connection;
 
-    private static String dbName = "search_engine";
-    private static String dbUser = "root";
-    private static String dbPass = "Vitylin97";
+    private final static String dbName = "search_engine";
+    private final static String dbUser = "root";
+    private final static String dbPass = "Vitylin97";
 
     public static Connection getConnection() {
         if (connection == null) {
@@ -19,12 +19,13 @@ public class DBConnection {
 
 
                 connection.createStatement().execute("CREATE TABLE IF NOT EXISTS page (" +
-                                "id INT NOT NULL AUTO_INCREMENT, " +
-                                "path TINYTEXT NOT NULL, " +
-                                "code INT NOT NULL, " +
-                                "content MEDIUMTEXT NOT NULL, " +
-                                "PRIMARY KEY(id), " +
-                                "UNIQUE KEY path(path(50)))");
+                        "id INT NOT NULL AUTO_INCREMENT, " +
+                        "path TINYTEXT NOT NULL, " +
+                        "code INT NOT NULL, " +
+                        "content MEDIUMTEXT NOT NULL, " +
+                        "site_id INT NOT NULL, " +
+                        "PRIMARY KEY(id), " +
+                        "UNIQUE KEY path(path(50)))");
 
 
                 connection.createStatement().execute("CREATE TABLE IF NOT EXISTS field (" +

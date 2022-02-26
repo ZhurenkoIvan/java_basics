@@ -1,6 +1,6 @@
 package main.ENUMS;
 
-public enum Language {
+public enum LemmaLanguage {
     RUS,
     ENG
 }

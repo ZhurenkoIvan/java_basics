@@ -12,7 +12,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
 
-//Берет данные из столбца content таблицы page и вычленяет леммы
+/**
+ * Берет данные из столбца content таблицы page и вычленяет леммы
+ */
+
 public class LemmaParser {
     private static final Connection connection = DBConnection.getConnection();
     private static PreparedStatement prStLemma;
@@ -39,20 +42,17 @@ public class LemmaParser {
             Document contentDoc = Jsoup.parse(rsPages.getString("content"));
             String title = contentDoc.title();
             String body = contentDoc.body().text();
-            Lemmatizator titleLemma = new Lemmatizator(title);
-            Lemmatizator bodyLemma = new Lemmatizator(body);
-            HashMap<String, Integer> titleMap = titleLemma.getLemmas();
-            HashMap<String, Integer> bodyMap = bodyLemma.getLemmas();
-            addToPrSt(titleMap);
-            addToPrSt(bodyMap);
+            addToPrSt(title);
+            addToPrSt(body);
             pathsCount++;
 
         }
         prStLemma.executeBatch();
     }
 
-    private void addToPrSt( HashMap<String, Integer> map) throws SQLException {
-        for (String key : map.keySet()) {
+    private void addToPrSt( String text) throws SQLException, IOException {
+
+        for (String key : new Lemmatizator(text).getLemmas().keySet()) {
             prStLemma.setString(1, key);
             prStLemma.setInt(2, 1);
             prStLemma.addBatch();

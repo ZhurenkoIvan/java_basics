@@ -1,8 +1,8 @@
 package main.SQL;
 
-import main.POJO.Index;
-import main.POJO.Lemma;
-import main.POJO.Page;
+import main.Domain.Index;
+import main.Domain.Lemma;
+import main.Domain.Page;
 
 import java.sql.Connection;
 import java.sql.ResultSet;

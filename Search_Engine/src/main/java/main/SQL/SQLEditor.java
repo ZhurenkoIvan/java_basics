@@ -6,6 +6,17 @@ import java.sql.SQLException;
 public class SQLEditor {
     private static Connection connection = DBConnection.getConnection();
 
+    public static void createNewSite() throws SQLException {
+        connection.createStatement().execute("DROP TABLE site");
+        connection.createStatement().execute("CREATE TABLE site (" +
+                "PRIMARY KEY(id), id INT NOT NULL AUTO_INCREMENT, " +
+                "status ENUM(\"INDEXING\", \"INDEXED\", \"FAILED\") NOT NULL, " +
+                "status_time DATETIME NOT NULL, " +
+                "last_error TEXT, " +
+                "url VARCHAR(255) NOT NULL, " +
+                "name VARCHAR(255) NOT NULL)");
+    }
+
     public static void createNewIndex() throws SQLException {
         connection.createStatement().execute("DROP TABLE _index");
         connection.createStatement().execute("CREATE TABLE _index (" +
@@ -33,6 +44,7 @@ public class SQLEditor {
                 "PRIMARY KEY(id), id INT NOT NULL AUTO_INCREMENT, " +
                 "lemma VARCHAR(255) NOT NULL, " +
                 "frequency INT NOT NULL, " +
+                "site_id INT NOT NULL, " +
                 "UNIQUE (lemma))");
     }
 

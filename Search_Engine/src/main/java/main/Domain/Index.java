@@ -1,4 +1,4 @@
-package main.POJO;
+package main.Domain;
 
 public class Index {
     private int indexId;

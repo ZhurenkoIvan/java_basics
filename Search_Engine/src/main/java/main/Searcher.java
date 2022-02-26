@@ -1,6 +1,6 @@
 package main;
 
-import main.POJO.LinkInfo;
+import main.Domain.LinkInfo;
 import main.SQL.DBConnection;
 import org.jsoup.Jsoup;
 import java.io.IOException;
@@ -9,8 +9,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
 
-//Осуществляет поиск списка страницы в порядке убывания релевантности
-//по получаемому запросу на основе данных таблиц _index, page и lemma
+/**
+ * Осуществляет поиск списка страницы в порядке убывания релевантности
+ * по получаемому запросу на основе данных таблиц _index, page и lemma
+ */
 public class Searcher {
     private static final Connection connection = DBConnection.getConnection();
 

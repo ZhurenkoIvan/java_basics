@@ -1,7 +1,7 @@
 package main;
 
-import main.POJO.Lemma;
-import main.POJO.Page;
+import main.Domain.Lemma;
+import main.Domain.Page;
 import main.SQL.DBConnection;
 import main.SQL.SQLEditor;
 import main.SQL.SQLGetter;
@@ -11,12 +11,13 @@ import org.jsoup.nodes.Document;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.HashSet;
 
-//Получает данные из таблиц lemma и page. Индексирует их и записывает в таблицу _index
+/**
+ * Получает данные из таблиц lemma и page. Индексирует их и записывает в таблицу _index
+ */
 public class Indexer {
     private static final Connection connection = DBConnection.getConnection();
 
@@ -49,12 +50,8 @@ public class Indexer {
             Document contentDoc = Jsoup.parse(page.getContent());
             String title = contentDoc.title();
             String body = contentDoc.body().text();
-            Lemmatizator titleLemma = new Lemmatizator(title);
-            Lemmatizator bodyLemma = new Lemmatizator(body);
-            HashMap<String, Integer> titleMap = titleLemma.getLemmas();
-            HashMap<String, Integer> bodyMap = bodyLemma.getLemmas();
-            addToPrSt(lemmaIdMap, titleMap, tagsWeight.get("title"), page.getId() );
-            addToPrSt(lemmaIdMap, bodyMap, tagsWeight.get("body"), page.getId() );
+            addToPrSt(lemmaIdMap, new Lemmatizator(title).getLemmas(), tagsWeight.get("title"), page.getId() );
+            addToPrSt(lemmaIdMap, new Lemmatizator(body).getLemmas(), tagsWeight.get("body"), page.getId() );
             pathsCount++;
         }
         prSt_Index.executeBatch();
