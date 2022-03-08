@@ -1,4 +1,4 @@
-package main.ENUMS;
+package searchEngineApp.ENUMS;
 
 public enum LemmaLanguage {
     RUS,

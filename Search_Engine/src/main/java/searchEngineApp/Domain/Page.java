@@ -1,4 +1,4 @@
-package main.Domain;
+package searchEngineApp.Domain;
 
 public class Page {
     private String path;

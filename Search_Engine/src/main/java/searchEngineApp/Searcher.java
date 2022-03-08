@@ -1,7 +1,7 @@
-package main;
+package searchEngineApp;
 
-import main.Domain.LinkInfo;
-import main.SQL.DBConnection;
+import searchEngineApp.Domain.LinkInfo;
+import searchEngineApp.SQL.DBConnection;
 import org.jsoup.Jsoup;
 import java.io.IOException;
 import java.sql.Connection;

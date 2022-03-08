@@ -1,6 +1,6 @@
-package main;
+package searchEngineApp;
 
-import main.SQL.DBConnection;
+import searchEngineApp.SQL.DBConnection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;

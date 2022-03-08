@@ -1,6 +1,6 @@
-package main;
+package searchEngineApp;
 
-import main.ENUMS.LemmaLanguage;
+import searchEngineApp.ENUMS.LemmaLanguage;
 import org.apache.lucene.morphology.LuceneMorphology;
 import org.apache.lucene.morphology.english.EnglishLuceneMorphology;
 import org.apache.lucene.morphology.russian.RussianLuceneMorphology;

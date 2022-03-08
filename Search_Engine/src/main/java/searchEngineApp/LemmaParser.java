@@ -1,7 +1,7 @@
-package main;
+package searchEngineApp;
 
-import main.SQL.DBConnection;
-import main.SQL.SQLEditor;
+import searchEngineApp.SQL.DBConnection;
+import searchEngineApp.SQL.SQLEditor;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
@@ -10,7 +10,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.HashMap;
 
 /**
  * Берет данные из столбца content таблицы page и вычленяет леммы

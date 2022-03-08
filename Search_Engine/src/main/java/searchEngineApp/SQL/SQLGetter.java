@@ -1,8 +1,8 @@
-package main.SQL;
+package searchEngineApp.SQL;
 
-import main.Domain.Index;
-import main.Domain.Lemma;
-import main.Domain.Page;
+import searchEngineApp.Domain.Index;
+import searchEngineApp.Domain.Lemma;
+import searchEngineApp.Domain.Page;
 
 import java.sql.Connection;
 import java.sql.ResultSet;

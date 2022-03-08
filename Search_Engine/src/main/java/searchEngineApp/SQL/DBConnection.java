@@ -1,4 +1,4 @@
-package main.SQL;
+package searchEngineApp.SQL;
 import java.sql.*;
 
 //Используется для создания соединения с базой данных

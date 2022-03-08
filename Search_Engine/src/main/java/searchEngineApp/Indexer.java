@@ -1,10 +1,10 @@
-package main;
+package searchEngineApp;
 
-import main.Domain.Lemma;
-import main.Domain.Page;
-import main.SQL.DBConnection;
-import main.SQL.SQLEditor;
-import main.SQL.SQLGetter;
+import searchEngineApp.Domain.Lemma;
+import searchEngineApp.Domain.Page;
+import searchEngineApp.SQL.DBConnection;
+import searchEngineApp.SQL.SQLEditor;
+import searchEngineApp.SQL.SQLGetter;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
